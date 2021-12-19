@@ -9,8 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static de.hhu.propra.exercise4.service.helpers.FilterHelpers.filterEqualsIfNotNull;
-import static de.hhu.propra.exercise4.service.helpers.FilterHelpers.filterStringContainsIfNotNull;
+import static de.hhu.propra.exercise4.service.helpers.FilterHelpers.*;
 
 @Service
 public class TitleService {
@@ -24,7 +23,7 @@ public class TitleService {
         return titles
                 .stream()
                 .filter(title -> filterStringContainsIfNotNull(name, title.getBezeichnung()))
-                .filter(title -> filterEqualsIfNotNull(duration, title.getDauer()))
+                .filter(title -> filterSmallerThan(duration, title.getDauer()))
                 .collect(Collectors.toList());
     }
 

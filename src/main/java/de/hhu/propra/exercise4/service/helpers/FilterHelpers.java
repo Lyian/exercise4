@@ -10,7 +10,11 @@ public class FilterHelpers {
         return true;
     }
 
-    //TODO: Change for Integer comparision
+    public static boolean filterSmallerThan(Integer filter, Integer value){
+        if(filter != null) return value >= filter;
+        return true;
+    }
+
     public static <T> boolean filterEqualsIfNotNull(T filter, T value){
         if(filter != null) return filter == value;
         return true;
