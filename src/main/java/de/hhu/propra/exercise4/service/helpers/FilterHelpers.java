@@ -10,8 +10,17 @@ public class FilterHelpers {
         return true;
     }
 
+    //TODO: Change for Integer comparision
     public static <T> boolean filterEqualsIfNotNull(T filter, T value){
         if(filter != null) return filter == value;
+        return true;
+    }
+
+    public static boolean filterIsTrueStringToBoolean(String booleanValue, boolean value){
+        if(booleanValue != null){
+            boolean convertedStringValue = booleanValue.toLowerCase(Locale.ROOT).equals("true");
+            return value == convertedStringValue;
+        }
         return true;
     }
 }
