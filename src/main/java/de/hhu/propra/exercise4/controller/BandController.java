@@ -99,6 +99,12 @@ public class BandController {
 
     @DeleteMapping("/{bandid}")
     public ResponseEntity deleteBand(@PathVariable int bandid){
-        return ResponseEntity.ok().build();
+        try{
+            bandRepository.deleteArtist(bandid);
+            return ResponseEntityFactory.createDeleteResponse(true, null);
+        }
+        catch (Exception e){
+            return ResponseEntityFactory.createDeleteResponse(false, e);
+        }
     }
 }

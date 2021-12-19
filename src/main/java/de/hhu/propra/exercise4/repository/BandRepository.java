@@ -81,7 +81,8 @@ public class BandRepository {
         catch (Exception e) {
             throw e;
         }
-
-
+    }
+    public Integer deleteArtist(int bandid) throws Exception {
+        return jdbcTemplate.update("DELETE FROM Band WHERE ROWID = ?", bandid);
     }
 }
