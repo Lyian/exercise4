@@ -48,9 +48,9 @@ public class UserController {
 
     @PostMapping("")
     @RequestMapping( consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity createNewUser(@RequestPart String email, @RequestPart String password, @RequestPart String benutzername){
+    public ResponseEntity createNewUser(@RequestPart String email, @RequestPart String passwort, @RequestPart String benutzername){
         try{
-            User user = new User(0, email, password, benutzername);
+            User user = new User(0, email, passwort, benutzername);
             userRepository.createNewUser(user);
             return ResponseEntityFactory.createPostResponseWithLocation(true, String.format("%s/%s", location, user.getEmail()), null);
         }
