@@ -2,8 +2,11 @@ package de.hhu.propra.exercise4.controller;
 
 import de.hhu.propra.exercise4.misc.ResponseEntityFactory;
 import de.hhu.propra.exercise4.model.entity.Artist;
+import de.hhu.propra.exercise4.model.entity.User;
 import de.hhu.propra.exercise4.repository.ArtistRepository;
+import de.hhu.propra.exercise4.repository.CommentRepository;
 import de.hhu.propra.exercise4.service.ArtistService;
+import de.hhu.propra.exercise4.service.PrinciaplService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +14,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,14 +28,22 @@ public class CommentController {
     private final String location = "/kommentare";
 
     @Autowired
-    ArtistRepository artistRepository;
+    PrinciaplService princiaplService;
 
     @Autowired
-    ArtistService artistService;
+    CommentRepository commentRepository;
 
+    @RolesAllowed("USER")
     @PatchMapping("/{kommentarid}")
-    public @ResponseBody List<Artist> updateComment(@PathVariable int kommentarid, @RequestPart String text) {
-        logger.info(String.format("updateComment %d, %s",kommentarid, text));
-        return new ArrayList<>();
+    public @ResponseBody List<Artist> updateComment(@PathVariable int kommentarid, @RequestPart String text, Principal principal) {
+        logger.info(String.format("updateComment %d, %s", kommentarid, text));
+
+        try{
+            User user = princiaplService.loadUserByPrincipal(principal);
+            commentRepository.updateComment(user, kommentarid, text);
+        }
+        catch (Exception e){
+
+        }
     }
 }

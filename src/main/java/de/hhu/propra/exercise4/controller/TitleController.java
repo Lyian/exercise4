@@ -82,11 +82,14 @@ public class TitleController {
 
     @RolesAllowed("USER")
     @PostMapping(value = "/{titelid}/kommentare", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity createComment(@PathVariable int titelid, @RequestPart String text){
+    public ResponseEntity createComment(@PathVariable int titelid, @RequestPart String text, Principal principal){
         logger.info(String.format("createComment %d %s", titelid, text));
-
-
-
-        return ResponseEntity.ok().build();
+        try{
+            User user = princiaplService.loadUserByPrincipal(principal);
+            int titleId = commentRepository.createComment(user, titelid, text);
+            return ResponseEntityFactory.createPostResponseWithLocation(true, String.format("%s/%s", location, titleId), null);
+        }catch(Exception e){
+            return ResponseEntityFactory.createPostResponseWithLocation(false, location, e);
+        }
     }
 }
