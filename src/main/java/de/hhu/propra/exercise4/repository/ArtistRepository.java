@@ -28,6 +28,7 @@ public class ArtistRepository {
         return jdbcTemplate.query("Select P.ROWID as Premiumnutzerid, N.ROWID as Nutzerid,  Name, N.Email, N.Benutzername, N.Passwort, P.Datum from Kuenstler join Premiumnutzer P on P.Email = Kuenstler.Email JOIN Nutzer N on N.Email = P.Email WHERE P.Email like ?", new ArtistMapper(), QueryHelper.createLikeParam(mail));
     }
 
+
     public Integer createNewArtist(Artist artist) throws Exception {
         return jdbcTemplate.update("INSERT INTO Kuenstler (Email, Name) VALUES(?,?)", artist.getEmail(), artist.getKuenstlername());
     }
