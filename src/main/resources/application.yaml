@@ -1,0 +1,6 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    jdbcUrl: jdbc:sqlite:classpath:db/database.db
