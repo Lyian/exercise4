@@ -27,4 +27,11 @@ public class ResponseEntityFactory {
         else
             return notFound(exception);
     }
+
+    public static ResponseEntity createDeleteResponse(boolean success, Exception exception){
+        if(success)
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        else
+            return notFound(exception);
+    }
 }
