@@ -35,15 +35,16 @@ public class CommentController {
 
     @RolesAllowed("USER")
     @PatchMapping("/{kommentarid}")
-    public @ResponseBody List<Artist> updateComment(@PathVariable int kommentarid, @RequestPart String text, Principal principal) {
+    public @ResponseBody ResponseEntity updateComment(@PathVariable int kommentarid, @RequestPart String text, Principal principal) {
         logger.info(String.format("updateComment %d, %s", kommentarid, text));
 
         try{
             User user = princiaplService.loadUserByPrincipal(principal);
             commentRepository.updateComment(user, kommentarid, text);
+            return ResponseEntityFactory.createDeleteResponse(true, null);
         }
         catch (Exception e){
-
+            return ResponseEntityFactory.createDeleteResponse(false, e);
         }
     }
 }

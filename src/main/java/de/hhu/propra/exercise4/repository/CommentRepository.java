@@ -32,7 +32,7 @@ public class CommentRepository {
         return jdbcTemplate.update("INSERT INTO nutzer_kommentar_titel (Email, TitelID, Kommentar) VALUES(?,?,?)", user.getEmail(), titleId, comment);
     }
 
-    public void updateComment(User user, int kommentarid, String text) {
-        return jdbcTemplate.update("UPDATE nutzer_kommentar_titel SET Kommentar=? where Email = ? and TitelID = ?", user.getEmail(), kommentarid, );
+    public Integer updateComment(User user, int kommentarid, String text) throws Exception{
+        return jdbcTemplate.update("UPDATE nutzer_kommentar_titel SET Kommentar= ? where Email = ? and ROWID = ?", text, user.getEmail(), kommentarid);
     }
 }
