@@ -30,6 +30,11 @@ public class UserRepository {
         return jdbcTemplate.queryForObject("SELECT ROWID, * FROM Nutzer WHERE Email LIKE ?", new UserMapper(), mail);
     }
 
+    public User getSingleUserByName(String name) throws Exception {
+        return jdbcTemplate.queryForObject(
+                "SELECT ROWID, * FROM Nutzer WHERE Benutzername = ?", new UserMapper(), name);
+    }
+
     public Integer createNewUser(User user) throws Exception {
         return jdbcTemplate.update("INSERT INTO Nutzer (Email, Benutzername, Passwort, AdresseID) VALUES(?,?,?,?)", user.getEmail(), user.getBenutzername(), user.getPassword(), 1);
     }

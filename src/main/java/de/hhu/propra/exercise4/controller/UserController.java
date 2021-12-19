@@ -29,7 +29,6 @@ public class UserController {
     @Autowired
     UserRepository userRepository;
 
-    @RolesAllowed("USER")
     @GetMapping("")
     public @ResponseBody
     List<User> getUser() {

@@ -1,16 +1,22 @@
 package de.hhu.propra.exercise4.service;
 
 import de.hhu.propra.exercise4.model.entity.Album;
+import de.hhu.propra.exercise4.model.entity.User;
 import de.hhu.propra.exercise4.repository.AlbumRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
+import static de.hhu.propra.exercise4.service.helpers.FilterHelpers.filterEqualsIfNotNull;
+import static de.hhu.propra.exercise4.service.helpers.FilterHelpers.filterStringContainsIfNotNull;
+
 @Service
 public class AlbumService {
+
     @Autowired
     AlbumRepository albumRepository;
 
@@ -24,15 +30,11 @@ public class AlbumService {
                 .collect(Collectors.toList());
     }
 
-    private boolean filterStringContainsIfNotNull(String filter, String value){
-        if(filter != null){
-            return value.toLowerCase(Locale.ROOT).contains(filter.toLowerCase(Locale.ROOT));
-        }
-        return true;
-    }
-
-    private <T> boolean filterEqualsIfNotNull(T filter, T value){
-        if(filter != null) return filter == value;
-        return true;
+    public int createNewAlbum(Album album, User user) throws Exception {
+        // Insert Album get Album Id inser to Kuenstler macht album
+            int id = albumRepository.createNewAlbum(album);
+            album.setAlbumdid(id);
+            albumRepository.insertNewAlbumForArtist(user, album);
+            return id;
     }
 }
