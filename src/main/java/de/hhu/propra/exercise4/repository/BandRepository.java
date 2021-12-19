@@ -1,5 +1,7 @@
 package de.hhu.propra.exercise4.repository;
 
+import de.hhu.propra.exercise4.model.entity.Artist;
+import de.hhu.propra.exercise4.repository.ArtistRepository;
 import de.hhu.propra.exercise4.model.entity.Band;
 import de.hhu.propra.exercise4.model.entity.User;
 import de.hhu.propra.exercise4.model.mapper.BandMapper;
@@ -19,6 +21,9 @@ public class BandRepository {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    ArtistRepository artistRepository;
 
     public List<Band> getAllBands(){
         return jdbcTemplate.query("SELECT ROWID, * FROM Band", new BandMapper());
@@ -60,14 +65,23 @@ public class BandRepository {
     }
 
     public Integer addNewArtistToBand(Integer bandID, String artistID) throws Exception {
-        KeyHolder keyHolder = new GeneratedKeyHolder();
+        try{
+            List<Artist> artists = artistRepository.getArtistByRowid(artistID);
+            Artist artist = artists.get(0);
+            KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement("INSERT INTO Kuenstler_teil_von_band (Email, BandID) VALUES (?, ?)");
-            ps.setString(1, Integer.toString(bandID));
-            ps.setString(2, artistID);
-            return ps;
-        }, keyHolder);
-        return (int) keyHolder.getKey();
+            jdbcTemplate.update(connection -> {
+                PreparedStatement ps = connection.prepareStatement("INSERT INTO Kuenstler_teil_von_band (Email, BandID) VALUES (?, ?)");
+                ps.setString(1, artist.getEmail());
+                ps.setString(2, Integer.toString(bandID));
+                return ps;
+            }, keyHolder);
+            return (int) keyHolder.getKey();
+        }
+        catch (Exception e) {
+            throw e;
+        }
+
+
     }
 }
