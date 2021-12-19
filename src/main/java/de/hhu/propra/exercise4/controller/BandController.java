@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,6 +63,7 @@ public class BandController {
         }
     }
 
+    @RolesAllowed("ARTIST")
     @PostMapping(value = "", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, params = {"name", "geschichte"})
     public ResponseEntity createNewBand(@RequestPart String name, @RequestPart String geschichte){
         try{
@@ -74,6 +76,7 @@ public class BandController {
         }
     }
 
+    @RolesAllowed("ARTIST")
     @PostMapping(value = "", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, params="name")
     public ResponseEntity createNewBandWoutStory(@RequestPart String name){
         try{
@@ -86,6 +89,7 @@ public class BandController {
         }
     }
 
+    @RolesAllowed("ARTIST")
     @PostMapping(value = "/{bandid}/kuenstler", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity addNewKuenstlerToBand(@PathVariable Integer bandid, @RequestPart String kuenstlerid){
         try{
@@ -97,6 +101,7 @@ public class BandController {
         }
     }
 
+    @RolesAllowed("ARTIST")
     @DeleteMapping("/{bandid}")
     public ResponseEntity deleteBand(@PathVariable int bandid){
         try{
